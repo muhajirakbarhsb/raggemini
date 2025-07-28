@@ -1,0 +1,32 @@
+# config.yaml
+# Complete configuration for Vertex AI LLM with RAG support
+
+vertex_ai:
+  project: "genai-sandbox-test"     # Your Google Cloud Project ID
+  location: "us-central1"           # Vertex AI region
+  model_name: "gemini-2.5-flash"    # Gemini model name
+  temperature: 0.7                  # Controls randomness (0.0 - 1.0)
+  max_output_tokens: 10000          # Maximum tokens to generate
+  top_p: 0.95                       # Nucleus sampling (0.0 - 1.0)
+  top_k: 40                         # Top-k sampling
+
+# Authentication token for your application
+auth_token: "simpletoken"
+
+# RAG Configuration
+rag:
+  corpus_id: "6917529027641081856"    # Your RAG corpus ID
+  enabled: true                       # Enable RAG by default
+  similarity_top_k: 3                 # Number of similar documents to retrieve
+  vector_distance_threshold: 0.7      # Similarity threshold for retrieval
+
+# Optional: Application settings
+app:
+  debug_mode: false                 # Enable debug logging
+  max_history_messages: 10          # Maximum chat history to maintain
+  response_timeout: 30              # Response timeout in seconds
+
+# Optional: Logging configuration
+logging:
+  level: "INFO"                     # DEBUG, INFO, WARNING, ERROR
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

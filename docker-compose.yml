@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: raggemini-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount your gcloud config directory for authentication
+      - ~/.config/gcloud:/root/.config/gcloud:ro
+      # Mount application data for development (optional)
+      - .:/app
+    environment:
+      - PORT=8000
+      - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json
+    networks:
+      - raggemini-network
+    restart: unless-stopped
+    
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: raggemini-frontend
+    ports:
+      - "8501:8501"
+    volumes:
+      # Mount only the app.py for the frontend
+      - ./app.py:/app/app.py
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_ENABLE_CORS=false
+      - STREAMLIT_SERVER_ENABLE_XSRF_PROTECTION=false
+    networks:
+      - raggemini-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+networks:
+  raggemini-network:
+    driver: bridge
